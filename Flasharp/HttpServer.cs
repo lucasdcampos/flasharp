@@ -20,17 +20,26 @@ public class HttpServer
         _middlewareFunctions.Add(func);
     }
 
-    internal void RegisterRoute(string method, string path, Func<Request, Response, Task<Response>> handler)
+    internal void RegisterRoute(
+    string method,
+    string path,
+    Func<Request, Response, Task<Response>> handler,
+    List<Action<Request, Response>>? specificMiddlewares = null)
     {
-        var segments = path
-            .Trim('/')
-            .Split('/', StringSplitOptions.RemoveEmptyEntries);
-
+        var segments = path.Trim('/').Split('/', StringSplitOptions.RemoveEmptyEntries);
         _routes.TryAdd(method, new List<Route>());
+
+        var allMiddlewares = new List<Action<Request, Response>>(_middlewareFunctions);
+        if (specificMiddlewares != null)
+        {
+            allMiddlewares.AddRange(specificMiddlewares);
+        }
+
         _routes[method].Add(new Route
         {
             Segments = segments,
-            Handler = handler
+            Handler = handler,
+            Middlewares = allMiddlewares
         });
     }
 
@@ -55,11 +64,6 @@ public class HttpServer
     {
         var request = context.Request;
         var response = context.Response;
-
-        foreach(var f in _middlewareFunctions)
-        {
-            f(new Request(request), new Response(response));
-        }
 
         var pathSegments = GetPathSegments(request);
 
@@ -88,6 +92,10 @@ public class HttpServer
 
             try
             {
+                foreach (var middleware in route.Middlewares)
+                {
+                    middleware(req, new Response(response));
+                }
                 await route.Handler(req, new Response(response));
             }
             catch
