@@ -41,7 +41,8 @@ var app = new App();
 // Starts the server on the given port
 await app.Listen(3000);
 
-// Routes (Available methods: GET, POST, PUT, PATCH, DELETE)
+// Routes
+// Available methods: Get, Post, Put, Patch, Delete
 app.Get("/hello", async (req, res) =>
 {
     return await res.Text("Hello!");
@@ -60,6 +61,13 @@ var body = await req.Body<MyDTO>();
 res.Text("Hello");
 res.Json(object);
 res.Status(201);
+
+// Middleware
+// All requests will call this method
+app.Use((req, res) =>
+{
+    Console.WriteLine($"{req.Method} {req.Path}");
+});
 ```
 
 ## Author's Note
