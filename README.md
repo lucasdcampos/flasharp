@@ -1,7 +1,11 @@
 # Flasharp ⚡
 
-A minimalist web framework for C# designed for small projects and prototypes.
+Flasharp is a minimalist web framework for C#, inspired by Express.js.
 
+It’s designed for **small projects, learning, and rapid prototyping**, offering a simple and expressive API without the overhead of ASP.NET.
+
+
+## Minimal Example
 ```cs
 using Flasharp;
 
@@ -19,57 +23,43 @@ await app.Listen(PORT, () =>
 });
 ```
 
-## About
+## Features
 
-Flasharp is inspired by Express.js and created as a lightweight alternative to ASP.NET.
-It’s meant for hobby projects, learning, and rapid prototyping. For larger applications, ASP.NET remains the recommended choice.
+- 🚀 Express-like API (`Get`, `Post`, etc.)
+- 🧩 Minimal setup — no boilerplate
+- 📦 Built-in JSON and text responses
+- 🛣️ Route params (`/users/:id`)
+- 📄 Automatic request body parsing
+- 🎯 Ideal for learning and prototypes
 
-## CRUD Example
+## API Overview
 
 ```cs
-using Flasharp;
-
+// Creates a new Flasharp application
 var app = new App();
-const int PORT = 3000;
 
-var users = new List<User>();
+// Starts the server on the given port
+await app.Listen(3000);
 
-app.Get("/", async (req, res) =>
+// Routes (Available methods: GET, POST, PUT, PATCH, DELETE)
+app.Get("/hello", async (req, res) =>
 {
-    return await res.Text("Hello, World!");
+    return await res.Text("Hello!");
 });
 
-app.Get("/users", async (req, res) =>
-{
-    return await res.Json(users);
-});
+// Params
+// Access route parameters (e.g. /users/:id)
+req.Params["id"];
 
-app.Post("/users", async (req, res) =>
-{
-    var userBody = await req.Body<CreateUserDTO>();
-    var user = new User(users.Count + 1, userBody!.username);
-    users.Add(user);
+// Body
+// Parses the request body into the given type
+var body = await req.Body<MyDTO>();
 
-    return await res.Status(201).Json(new { message = "User created successfully!", user });
-});
-
-app.Get("/users/:id", async (req, res) =>
-{
-    var userId = int.Parse(req.Params["id"]);
-    User? user = users.FirstOrDefault(u => u.id == userId);
-
-    return user != null 
-        ? await res.Json(user) 
-        : await res.Status(404).Json(new { message = $"User {userId} not found!" });
-});
-
-await app.Listen(PORT, () =>
-{
-    Console.WriteLine($"Server running on port {PORT}");
-});
-
-record User(int id, string username);
-record CreateUserDTO(string username);
+// Response
+// Status can be chained with any response
+res.Text("Hello");
+res.Json(object);
+res.Status(201);
 ```
 
 ## Author's Note
