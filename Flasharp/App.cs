@@ -4,7 +4,7 @@ public class App : RouteManager
 {
     private HttpServer _server = new();
 
-    public async Task Listen(int port, Action? action = null)
+    public async Task Listen(int port = 3000, Action? action = null)
     {
         foreach (var route in RouteDefinitions)
             _server.RegisterRoute(route.Method, route.Path, route.Handler, route.Middlewares.ToList());
