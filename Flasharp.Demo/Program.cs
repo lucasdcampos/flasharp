@@ -2,11 +2,24 @@
 
 var app = new App();
 
-var logger = (Request req, Response res) => Console.WriteLine($"{req.Method} {req.Path}");
-var auth = (Request req, Response res) => { /* logica de auth */ };
+app.Get("/", (req, res) =>
+{
+   return res.Status(Status.Ok).Send("API is up and running"); 
+});
 
-app.Get("/dashboard", logger, auth, async (req, res) => {
-    return await res.Text("Dashboard OK");
+app.Get("/hello", (req, res) =>
+{
+   return res.Send(new {message = "Hello"}); 
+});
+
+app.Get("/error", (req, res) =>
+{
+   return res.Status(Status.InternalServerError).Send(new {message = "Oops!"}); 
+});
+
+app.Get("/index", (req, res) =>
+{
+   return res.Html("<h1>Hello!</h1>"); 
 });
 
 await app.Listen(3000);

@@ -28,8 +28,6 @@ public class Response
 
         await HttpResponse.OutputStream.WriteAsync(buffer, 0, buffer.Length);
 
-        HttpResponse.OutputStream.Close();
-
         return this;
     }
 
@@ -45,5 +43,27 @@ public class Response
         await HttpResponse.OutputStream.WriteAsync(buffer);
 
         return this;
+    }
+
+    public async Task<Response> Html(string html)
+    {
+        byte[] buffer = Encoding.UTF8.GetBytes(html);
+
+        HttpResponse.ContentType = "text/html; charset=utf-8";
+        HttpResponse.ContentLength64 = buffer.Length;
+
+        await HttpResponse.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+
+        return this;
+    }
+
+    public Task<Response> Send(string text)
+    {
+        return Text(text);
+    }
+
+    public Task<Response> Send(object data)
+    {
+        return Json(data);
     }
 }
