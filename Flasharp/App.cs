@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Flasharp;
 
 public class App
@@ -14,6 +16,11 @@ public class App
         action!();
 
         await _server.Start(port);
+    }
+
+    public void Use(Action<Request, Response> handler)
+    {
+        _server.AddMiddleware(handler);
     }
 
     public void Get(string path, Func<Request, Response, Task<Response>> handler)

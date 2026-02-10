@@ -5,6 +5,11 @@ const int PORT = 3000;
 
 var users = new List<User>();
 
+app.Use((req, res) =>
+{
+    Console.WriteLine(req.Method + " " + req.Path);
+});
+
 app.Get("/", async (req, res) =>
 {
     return await res.Text("Hello, World!");

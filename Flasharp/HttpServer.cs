@@ -6,11 +6,18 @@ public class HttpServer
 {
     private HttpListener _listener { get; }
     private Dictionary<string, List<Route>> _routes;
+    private List<Action<Request, Response>> _middlewareFunctions;
 
     public HttpServer()
     {
         _listener = new();
         _routes = new();
+        _middlewareFunctions = new();
+    }
+
+    internal void AddMiddleware(Action<Request, Response> func)
+    {
+        _middlewareFunctions.Add(func);
     }
 
     internal void RegisterRoute(string method, string path, Func<Request, Response, Task<Response>> handler)
@@ -48,6 +55,11 @@ public class HttpServer
     {
         var request = context.Request;
         var response = context.Response;
+
+        foreach(var f in _middlewareFunctions)
+        {
+            f(new Request(request), new Response(response));
+        }
 
         var pathSegments = GetPathSegments(request);
 
