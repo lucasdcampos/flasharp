@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace Flasharp;
+namespace Argo;
 
 public class Request
 {

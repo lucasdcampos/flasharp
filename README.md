@@ -1,13 +1,13 @@
-# Flasharp ⚡
+# Argo ⚡
 
-Flasharp is a minimalist web framework for C#, inspired by Express.js.
+Argo is a minimalist web framework for C#, inspired by Express.js.
 
 It’s designed for **small projects, learning, and rapid prototyping**, offering a simple and expressive API without the overhead of ASP.NET.
 
 
 ## Minimal Example
 ```cs
-using Flasharp;
+using Argo;
 
 var app = new App();
 const int PORT = 3000;
@@ -35,7 +35,7 @@ await app.Listen(PORT, () =>
 ## API Overview
 
 ```cs
-// Creates a new Flasharp application
+// Creates a new Argo application
 var app = new App();
 
 // Starts the server on the given port

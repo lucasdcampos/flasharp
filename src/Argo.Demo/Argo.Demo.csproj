@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Flasharp\Flasharp.csproj" />
+    <ProjectReference Include="..\Argo\Argo.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

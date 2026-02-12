@@ -1,4 +1,4 @@
-namespace Flasharp;
+namespace Argo;
 
 public static class Status
 {

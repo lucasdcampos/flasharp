@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Flasharp;
+namespace Argo;
 
 public class HttpServer
 {
@@ -13,11 +13,6 @@ public class HttpServer
         _listener = new();
         _routes = new();
         _middlewareFunctions = new();
-    }
-
-    internal void AddMiddleware(Action<Request, Response> func)
-    {
-        _middlewareFunctions.Add(func);
     }
 
     internal void RegisterRoute(

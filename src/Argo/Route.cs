@@ -1,4 +1,4 @@
-namespace Flasharp;
+namespace Argo;
 
 public class Route
 {
